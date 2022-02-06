@@ -1,8 +1,9 @@
 lista_numeri=[4,5,6,7,9]
 
-def sum_list(lista_numeri):
+def sum_lista(lista_numeri):
     somma=0
-    for item in range(len(lista_numeri)):
-        somma+=item
+    for item in lista_numeri:
+        somma=somma+item
     return somma
-print (somma)
+
+print ('La somma della lista è: {}'.format(sum_lista(lista_numeri)))
