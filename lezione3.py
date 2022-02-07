@@ -1,16 +1,22 @@
-def somma_valori(array_values):
-    array_values=[]
+def somma_valori(self):
+    #inizializzo una lista vuota per salvare i valori
+    values=[]
 
+    #agisco linea per linea
     for line in my_file:
+        #faccio lo split di ogni riga sulla virgola
         elements=line.split(',')
+        #se NON sto processando l'intestazione (che sono delle parole e non ci servono)
         if elements[0]!='Date':
             value=elements[1]
-            array_values.append(float(value))
+            #aggiungo alla lista dei valori che era vuota questo valore
+            values.append(float(value)) #con float sto trasformando le stringhe in numeri in modo da poter fare la somma
     my_file.close()
     somma=0
-    for prezzo in array_values:
-        somma+=prezzo
+    for item in values:
+        somma=somma+item
     return (somma)
 
+#apro e leggo il file
 my_file = open('sales.txt', 'r')
-print(somma_valori(my_file))  
+print(somma_valori(my_file))

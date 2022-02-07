@@ -6,4 +6,4 @@ def sum_lista(lista_numeri):
         somma=somma+item
     return somma
 
-print ('La somma della lista è: {}'.format(sum_lista(lista_numeri)))
+print ('La somma degli elementi della lista è: {}'.format(sum_lista(lista_numeri)))
