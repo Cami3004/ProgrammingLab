@@ -12,7 +12,7 @@ class CSVFile():
             self.can_read=False
             print('Errore in apertura del file: {}'.format(e))
         
-    def get_data(self, start=5, end=7):
+    def get_data(self):
         #se nell'init ho settato can_read a False vuol dire che il file non poteva essere aperto, quindi lo comunico ed esco dalla funzione tornando 'niente'
         if self.can_read==False:
             print('Errore, file non apribile o illeggibile')
@@ -22,14 +22,38 @@ class CSVFile():
             my_file = open(self.name, 'r')
             dati=[]
             #leggo il file linea per linea, faccio lo split di ogni riga sulla virgola
+            s=0 #in s memorizzo il numero di linee del file
             for line in my_file:
+                s=s+1
                 elements=line.split(',')
                 #se non sto processando l'intestazione aggiungo alla lista gli elementi di questa linea
                 if elements[0]!='Date':
-                    dati.append(elements)
-            for i in range(5,7,1):
-                print(dati[i])
-                #in questo modo il numero finale non viene considerato, mentre se voglio considerarlo devo scrivere: i=start while i<=end: print(dati[i]) i=i+1
+                    try:
+                        dati.append(elements)
+                    except:
+                        raise Exception ('Non è stato possibile convertire il valore "{}" in un elemento della lista'.format(elements))
+                        break
+            try:
+                start=int(input("Inserisci l'inizio dell'intervallo: "))
+            except Exception as e:
+                print('"{}"" non è convertibile in intero'.format(start))
+                print('Ho trovato questo errore: {}'.format(e))
+            if not isinstance(start, int) or (start<0):
+                raise Exception('{} non è un numero intero positivo'.format(start))
+            if (start>s):
+                raise Exception('{} è più grande del numero di linee del file che sono: {}'.format(start,s))
+            try:
+                end=int(input("Inserisci la fine dell'intervallo: "))
+            except Exception as e:
+                print('"{}" non è convertibile in intero'.format(end))
+                print('Ho trovato questo errore: {}'.format(e))
+            if not isinstance(end, int) or (end<0):
+                raise Exception('"{}" non è un numero intero positivo'.format(end))
+            if(end>s):
+                raise Exception ('{} è più grande del numero di linee del file che sono: {}'.format(end, s))
+            if(start>end):
+                raise Exception ("La fine dell'intervallo {} è minore del suo inizio {}".format(end, start))
+            return dati[start:end]
         #devo controllare che start sia minore di end, che siano entrambi due numeri maggiori di zero (al massimo start uguale a zero), che siano due numeri interi, o stringhe convertibili a interi, se sono float li arrotondo avvisando, che, se start è minore di end, allora verifico che end sia minore uguale alla lunghezza totale della lista
         my_file.close()
 
