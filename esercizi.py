@@ -5,13 +5,18 @@ def stampa(lista1):
     print(lista1)
 
 def statistiche(lista1):
+    flag=1 #lista di tutti interi
     somma=0
     for i in range(len(lista1)):
-        type(lista1[i])==int
-    somma=sum(lista1)
-    minimo=min(lista1)
-    massimo=max(lista1)
-    print('La somma è: {}, il minimo è: {}, il massimo è: {}'.format(somma, minimo, massimo))
+        if type(lista1[i])!=int:
+            flag=0
+    if flag==1:
+        somma=sum(lista1)
+        minimo=min(lista1)
+        massimo=max(lista1)
+        print('La somma è: {}, il minimo è: {}, il massimo è: {}'.format(somma, minimo, massimo))
+    else:
+        print("Nella lista c'è almeno un elemento che non è un intero")
 
 def somma_vettoriale(lista1, lista2):
     my_list=[]

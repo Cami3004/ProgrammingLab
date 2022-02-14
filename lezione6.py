@@ -54,7 +54,7 @@ class CSVFile():
             if(start>end):
                 raise Exception ("La fine dell'intervallo {} è minore del suo inizio {}".format(end, start))
             return dati[start:end]
-        #devo controllare che start sia minore di end, che siano entrambi due numeri maggiori di zero (al massimo start uguale a zero), che siano due numeri interi, o stringhe convertibili a interi, se sono float li arrotondo avvisando, che, se start è minore di end, allora verifico che end sia minore uguale alla lunghezza totale della lista
+        #devo controllare che siano stringhe convertibili a interi, se sono float li arrotondo avvisando
         my_file.close()
 
     
