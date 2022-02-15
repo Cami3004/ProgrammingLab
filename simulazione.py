@@ -18,7 +18,7 @@ class MovingAverage():
             raise ExamException('Errore, la lista inserita è vuota')
         #controllo che i valori siano in una lista
         if not isinstance(lista, list):
-            raise ExamException('I valori non sono inseriti in una lista, ma si tratto di: {}'.format(type(lista)))
+            raise ExamException('I valori non sono inseriti in una lista, ma si tratta di: {}'.format(type(lista)))
         #controllo che la lista sia più lunga della finestra
         if(self.lunghezza>len(lista)):
             raise ExamException('errore, la lista è più corta della finestra')
@@ -35,14 +35,11 @@ class MovingAverage():
                 continue
             else:
                 media=0
-                #l'elstremo superiore i non è compreso
+                #osservazione: l'elstremo superiore i non è compreso
                 media=sum(lista[i-self.lunghezza:i])/self.lunghezza
                 risultato.append(media)
         
         return risultato
-
-    #def __str__(self):
-        #return 'il risultato della lista {} è {}'.foramt(self.lista, #self.computr(self.lista))
     
 media_mobile=MovingAverage(2)
 lista=[2,4,8,16]
