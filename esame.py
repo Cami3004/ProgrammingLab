@@ -30,7 +30,7 @@ class CSVTimeSeriesFile():
                 if(len(elementi)>=2):
                     data=elementi[0]
                     passeggeri=elementi[1]
-                #controllo che la data abbia sia un anno che un mese
+                #controllo che la data abbia sia l'anno che il mese
                     data=data.split('-')
                     if(len(data)>=2):
                         anno=data[0]
@@ -47,7 +47,7 @@ class CSVTimeSeriesFile():
                                 #con l'istruzione continue termino l'iterazione e continuo con il prossimo ciclo ignorando questa riga come da consegna
                         else: 
                             print('Errore riscontrato nella seguente data: {}-{}'.format(anno, mese))
-                            continue 
+                            continue
                         
                         #controllo, come da consegna, che il numero di passeggeri sia intero positivo
                         if (passeggeri.isnumeric()==True and int(passeggeri)>0):
@@ -74,23 +74,25 @@ class CSVTimeSeriesFile():
         if len(lista_date)==0:
             raise ExamException('Errore, il file inserito è vuoto')
 
-        #controllo che non ci siano duplicati
+        #controllo che non ci siano duplicati con la funzione count() che conta le occorrenze
         for item in lista_date:
             if(lista_date.count(item)>1):
                 raise ExamException('Errore, la seguente data è ripetuta: {}'.format(item))
 
         #controllo che i mesi e gli anni siano in ordine
-        i=0
-        while(i<len(lista_date)-1):
-            if(lista_mesi[i]!=12): #se non sono su dicembre...
-            #gli anni di due dati successivi devono essere gli stessi e i mesi devono essere consecutivi, se non è così alzo un'eccezione
-                if(lista_anni[i]!=lista_anni[i+1] or lista_mesi[i]+1!=lista_mesi[i+1]):
+        #parto da i uguale ad uno saltando il primo elemento perchè non ho nessum dato precedente con cui confrontarlo
+        i=1
+        while i<(len(lista_date)-1):
+            #se le due date hanno lo stesso anno controllo che i mesi siano in ordine crescente
+            if(lista_anni[i]==lista_anni[i-1]):
+                if lista_mesi[i-1]>lista_mesi[i]:
                     raise ExamException('Errore, la serie temporale non è ordinata')
-            #altrimenti verifico che gli anni siano consecutivi e che dopo dicembre (12) venga gennaio (1)
-            elif(lista_anni[i]+1!=lista_anni[i+1] or lista_mesi[i+1]!=1):
+            #altrimenti se sono passata ad un nuovo anno controllo che esso sia il successivo
+            else:
+                if lista_anni[i]!=lista_anni[i-1]+1:
                     raise ExamException('Errore, la serie temporale non è ordinata')
             i=i+1
-           
+
         return time_series
 
 def detect_similar_monthly_variations(time_series, years):
@@ -133,12 +135,8 @@ def detect_similar_monthly_variations(time_series, years):
     anno_1=[[item[1], item[2]] for item in lista_dati if item[0]==years[1]]
 
     #creo due liste di 12 elementi in cui ogni elemento sarà la stringa 'nullo'
-    anno_0_passeggeri=[]
-    anno_1_passeggeri=[]
-    for v in range(12):
-        anno_0_passeggeri.append('nullo')
-    for v in range(12):
-        anno_1_passeggeri.append('nullo')
+    anno_0_passeggeri=['nullo' for i in range(12)]
+    anno_1_passeggeri=['nullo' for i in range(12)]
 
     #ora sostituisco il valore 'nullo' con il numero dei passeggeri di quel mese (mese 1=gennaio, posizione 0) e nel caso in cui manca un valore rimane la stringa 'nullo'
     #faccio due volte la stessa cose perchè ho due liste, una per years[0] e una per years[1]
@@ -152,6 +150,7 @@ def detect_similar_monthly_variations(time_series, years):
 
     #calcolo le differenze come da consegna, considerando che se trovo la stringa 'nullo' c'è un dato mancante e quindi non posso fare la differenza
     diff_anno_0=[]
+    #la lista avrà 11 elementi, quindi i andrà da 0 a 10
     for i in range(11):
         if(anno_0_passeggeri[i]=='nullo' or anno_0_passeggeri[i+1]=='nullo'):
             diff_anno_0.append('nullo')
